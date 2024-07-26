@@ -1,37 +1,33 @@
 #!/bin/bash
 
-if [ "$EUID" -ne 0 ]; then
-  echo "Please run as root"
-  exit 1
-fi
-
 # Update the system
 echo "Updating system packages..."
-sudo pacman -Syu --noconfirm || { echo "System update failed"; exit 1; }
+sudo pacman -Syu || { echo "System update failed"; exit 1; }
 
 # Installing necessary packages
 echo "Installing necessary packages for compilation and basic system utilities..."
-sudo pacman -S --noconfirm base-devel git vim xwallpaper xorg-xrandr zsh python-pywal zsh-syntax-highlighting xdotool || { echo "Package installation failed"; exit 1; }
+sudo pacman -S base-devel git vim xwallpaper xorg-xrandr zsh python-pywal zsh-syntax-highlighting xdotool || { echo "Package installation failed"; exit 1; }
 
 echo "Installing dependencies ....."
-sudo pacman -S --noconfirm xorg libxft libx11 libxinerama build-essential ttf-font-awesome python python-pip || { echo "Additional dependencies installation failed"; exit 1; }
+sudo pacman -S xorg libxft libx11 libxinerama ttf-font-awesome python python-pip || { echo "Additional dependencies installation failed"; exit 1; }
 
 echo "Installing gdown for GD pull req"
-sudo pip install gdown || { echo "Failed to install gdown"; exit 1; }
+sudo pip install gdown --break-system-packages || { echo "Failed to install gdown"; exit 1; }
 
-# Cloning the main repository
-echo "Cloning the main repository from GitHub..."
-git clone https://github.com/ofcourseiuselinux/dx.git || { echo "Failed to clone repository"; exit 1; }
+# Cloning the repositories
+echo "Cloning the dwm repository from GitHub..."
+git clone https://github.com/ofcourseiuselinux/myusage-dwm.git || { echo "Failed to clone dwm repository"; exit 1; }
 
-# Navigate into the 'dx' directory and run 'sudo make all'
-cd dx || { echo "Failed to change directory to dx"; exit 1; }
-echo "Running 'sudo make all' in the 'dx' directory..."
-sudo make all || { echo "Failed to run make all"; exit 1; }
+echo "Cloning the st repository from GitHub..."
+git clone https://github.com/ofcourseiuselinux/myusage-st.git || { echo "Failed to clone st repository"; exit 1; }
 
-# Array of subdirectories to build and install within the 'dx' directory
-directories=("dwm" "dmenu" "st")
+echo "Cloning the dmenu repository from GitHub..."
+git clone https://github.com/ofcourseiuselinux/myusage-dmenu.git || { echo "Failed to clone dmenu repository"; exit 1; }
 
-# Loop through each subdirectory and build/install
+# Array of repositories to build and install
+directories=("myusage-dwm" "myusage-st" "myusage-dmenu")
+
+# Loop through each repository and build/install
 for dir in "${directories[@]}"; do
   if [ -d "$dir" ]; then
     cd "$dir" || { echo "Failed to change directory to $dir"; exit 1; }
@@ -42,16 +38,6 @@ for dir in "${directories[@]}"; do
     echo "Directory $dir does not exist."
   fi
 done
-
-# Handle the 'dwmstatus' directory separately
-if [ -d "dwmstatus" ]; then
-  cd "dwmstatus" || { echo "Failed to change directory to dwmstatus"; exit 1; }
-  echo "Executing 'sudo ./install.sh' in 'dwmstatus' directory..."
-  sudo ./install.sh || { echo "Failed to execute install.sh"; exit 1; }
-  cd ..
-else
-  echo "Directory 'dwmstatus' does not exist."
-fi
 
 # Configure .xinitrc
 echo "Configuring .xinitrc to start dwm..."
@@ -118,6 +104,14 @@ echo "xcompmgr &" >> ~/.xinitrc
 echo "~/.local/bin/theme-script.sh &" >> ~/.xinitrc
 echo "exec dwm" >> ~/.xinitrc
 
-echo ".xinitrc has been configured."
+# Modify .bash_profile to add startx
+echo "Modifying .bash_profile to add 'startx'..."
+if ! grep -q "startx" ~/.bash_profile; then
+  echo "startx" >> ~/.bash_profile || { echo "Failed to modify .bash_profile"; exit 1; }
+else
+  echo "'startx' is already present in .bash_profile"
+fi
+
+echo ".xinitrc has been configured and .bash_profile updated."
 
 echo "Configuration complete."
