@@ -44,25 +44,6 @@ echo "Configuring .xinitrc to start dwm..."
 # Copy the default xinitrc to the user's home directory
 cp /etc/X11/xinit/xinitrc ~/.xinitrc || { echo "Failed to copy xinitrc"; exit 1; }
 
-# Install Oh My Zsh
-echo "Installing Oh My Zsh..."
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" --unattended || { echo "Failed to install Oh My Zsh"; exit 1; }
-
-# Set zsh as the default shell
-echo "Setting zsh as the default shell..."
-chsh -s $(which zsh) || { echo "Failed to set zsh as default shell"; exit 1; }
-
-# Configure .zshrc
-echo "Configuring .zshrc..."
-# Update the ZSH_THEME in .zshrc
-sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="alanpeabody"/' ~/.zshrc || { echo "Failed to update ZSH_THEME"; exit 1; }
-
-# Modify alanpeabody.zsh-theme
-echo "Configuring alanpeabody.zsh-theme..."
-# Edit the alanpeabody theme file
-sed -i 's/PROMPT="${user} ${pwd}$ "/PROMPT="[${user} ${pwd}]$ "/' ~/.oh-my-zsh/themes/alanpeabody.zsh-theme || { echo "Failed to modify alanpeabody.zsh-theme"; exit 1; }
-
-echo "Terminal colored!"
 
 # Creating wallpaper directory
 echo "Creating wallpaper directory..."
