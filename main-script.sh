@@ -38,9 +38,6 @@
 # Completion Message:
 # Prints a message indicating that the installation is complete and prompts the user to reboot the system.
 
-
-
-
 # Checking Sudo privileges
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root (use sudo)." 
@@ -61,56 +58,54 @@ sudo pacman -S git vim neofetch uwufetch libxinerama libxft xorg-server xorg-xin
      bluez bluez-utils --noconfirm || { echo "Installation of necessary programs failed"; exit 1; }
 
 # Making DIR for git REPOS for DE
-mkdir -p ~/Gitoo || { echo "Failed to create Gitoo directory"; exit 1; }
-cd ~/Gitoo || { echo "Failed to change directory to Gitoo"; exit 1; }
+mkdir -p "$HOME/Gitoo" || { echo "Failed to create Gitoo directory"; exit 1; }
+cd "$HOME/Gitoo" || { echo "Failed to change directory to Gitoo"; exit 1; }
 
 # Cloning and building repos and compiling them
 
 # dwm: Window Manager
-git clone --depth=1 https://github.com/Bugswriter/dwm.git ~/Gitoo || { echo "Git cloning dwm failed"; exit 1; }
-sudo make -C ~/Gitoo/dwm install || { echo "Installing dwm failed"; exit 1; }
+git clone --depth=1 https://github.com/Bugswriter/dwm.git "$HOME/Gitoo/dwm" || { echo "Git cloning dwm failed"; exit 1; }
+sudo make -C "$HOME/Gitoo/dwm" install || { echo "Installing dwm failed"; exit 1; }
 
 # st: Terminal
-git clone --depth=1 https://github.com/Bugswriter/st.git ~/.local/src/st || { echo "Git cloning st failed"; exit 1; }
-sudo make -C ~/Gitoo/st install || { echo "Installing st failed"; exit 1; }
+git clone --depth=1 https://github.com/Bugswriter/st.git "$HOME/.local/src/st" || { echo "Git cloning st failed"; exit 1; }
+sudo make -C "$HOME/.local/src/st" install || { echo "Installing st failed"; exit 1; }
 
 # dmenu: Program Menu
-git clone --depth=1 https://github.com/Bugswriter/dmenu.git ~/Gitoo || { echo "Git cloning dmenu failed"; exit 1; }
-sudo make -C ~/Gitoo/dmenu install || { echo "Installing dmenu failed"; exit 1; }
+git clone --depth=1 https://github.com/Bugswriter/dmenu.git "$HOME/Gitoo/dmenu" || { echo "Git cloning dmenu failed"; exit 1; }
+sudo make -C "$HOME/Gitoo/dmenu" install || { echo "Installing dmenu failed"; exit 1; }
 
 # dmenu: Dmenu based Password Prompt
-git clone --depth=1 https://github.com/ritze/pinentry-dmenu.git ~/Gitoo || { echo "Git cloning pinentry-dmenu failed"; exit 1; }
-sudo make -C ~/Gitoo/pinentry-dmenu clean install || { echo "Installing pinentry-dmenu failed"; exit 1; }
+git clone --depth=1 https://github.com/ritze/pinentry-dmenu.git "$HOME/Gitoo/pinentry-dmenu" || { echo "Git cloning pinentry-dmenu failed"; exit 1; }
+sudo make -C "$HOME/Gitoo/pinentry-dmenu" clean install || { echo "Installing pinentry-dmenu failed"; exit 1; }
 
 # dwmblocks: Status bar for dwm
-git clone --depth=1 https://github.com/ofcourseiuselinux/dwmblocks.git ~/Gitoo || { echo "Git cloning dwmblocks failed"; exit 1; }
-sudo make -C ~/Gitoo/dwmblocks install || { echo "Installing dwmblocks failed"; exit 1; }
+git clone --depth=1 https://github.com/ofcourseiuselinux/dwmblocks.git "$HOME/Gitoo/dwmblocks" || { echo "Git cloning dwmblocks failed"; exit 1; }
+sudo make -C "$HOME/Gitoo/dwmblocks" install || { echo "Installing dwmblocks failed"; exit 1; }
 
 # Statusbar icons 
-git clone --depth=1 https://github.com/ofcourseiuselinux/iconscripts.git ~/Gitoo || { echo "Git cloning iconscripts failed"; exit 1; }
-cd ~/Gitoo/iconscripts || { echo "Failed to change directory to iconscripts"; exit 1; }
-mv * ~/.local/bin || { echo "Failed to move statusbar icons"; exit 1; }
+git clone --depth=1 https://github.com/ofcourseiuselinux/iconscripts.git "$HOME/Gitoo/iconscripts" || { echo "Git cloning iconscripts failed"; exit 1; }
+cd "$HOME/Gitoo/iconscripts" || { echo "Failed to change directory to iconscripts"; exit 1; }
+mv * "$HOME/.local/bin" || { echo "Failed to move statusbar icons"; exit 1; }
 
 # Retrieving wallpaper from my GDRIVE
-cd || { echo "Failed to change directory to home"; exit 1; }
-mkdir -p ~/wallcolor || { echo "Failed to create wallcolor directory"; exit 1; }
-cd ~/wallcolor || { echo "Failed to change directory to wallcolor"; exit 1; }
-gdown https://drive.google.com/file/d/1oW5b-fmV437SndGRDQ-Yz-vFizDmDZFG/view?usp=drive_link -O ~/wallcolor || { echo "Failed to download wallpaper"; exit 1; }
+mkdir -p "$HOME/wallcolor" || { echo "Failed to create wallcolor directory"; exit 1; }
+cd "$HOME/wallcolor" || { echo "Failed to change directory to wallcolor"; exit 1; }
+gdown https://drive.google.com/file/d/1oW5b-fmV437SndGRDQ-Yz-vFizDmDZFG/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
 # Repeat for other gdown commands similarly...
 
 # Copying configs to proper places
-cp /etc/X11/xinit/xinitrc ~/.xinitrc || { echo "Failed to copy xinitrc"; exit 1; }
+cp /etc/X11/xinit/xinitrc "$HOME/.xinitrc" || { echo "Failed to copy xinitrc"; exit 1; }
 
 # Adding our configs and removing stuff to OS configs and Appending code to ~/.xinitrc using heredoc
-sed -i '/twm &/,$d' ~/.xinitrc || { echo "Failed to update xinitrc"; exit 1; }
-cat <<EOF >> ~/.xinitrc
+sed -i '/twm &/,$d' "$HOME/.xinitrc" || { echo "Failed to update xinitrc"; exit 1; }
+cat <<EOF >> "$HOME/.xinitrc"
 xcompmgr &
 EOF
 
 # Generating script for TTY and DE theming 
-cd || { echo "Failed to change directory to home"; exit 1; }
-mkdir -p ~/.local/bin || { echo "Failed to create .local/bin directory"; exit 1; }
-cd ~/.local/bin || { echo "Failed to change directory to .local/bin"; exit 1; }
+mkdir -p "$HOME/.local/bin" || { echo "Failed to create .local/bin directory"; exit 1; }
+cd "$HOME/.local/bin" || { echo "Failed to change directory to .local/bin"; exit 1; }
 touch colorscript.sh || { echo "Failed to create colorscript.sh"; exit 1; }
 chmod +x colorscript.sh || { echo "Failed to set executable permissions for colorscript.sh"; exit 1; }
 cat <<EOF > colorscript.sh
@@ -120,25 +115,24 @@ cat <<EOF > colorscript.sh
 setfont ttf-fira-code
 
 # Setting variable and its value
-wall=$(find ~/wallcolor -type f -name "*.jpg" -o -name "*.png" | shuf -n 1)
+wall=\$(find $HOME/wallcolor -type f -name "*.jpg" -o -name "*.png" | shuf -n 1)
 
 # Clear pywal cache
 wal -c
 
-# Set wallpaper as the value $wall
-xwallpaper --zoom $wall
+# Set wallpaper as the value \$wall
+xwallpaper --zoom \$wall
 
 # Generating color theme as per wallpaper
-wal -i $wall
+wal -i \$wall
 
 # Registering keystroke for status bar to sync theme
 xdotool key super+F5
 EOF
 
 # Adding path variables
-cd || { echo "Failed to change directory to home"; exit 1; }
-touch .zprofile || { echo "Failed to create .zprofile"; exit 1; }
-cat <<EOF > .zprofile
+touch $HOME/.zprofile || { echo "Failed to create .zprofile"; exit 1; }
+cat <<EOF > $HOME/.zprofile
 export ZDOTDIR="$HOME/.config/zsh"
 export PATH=$HOME/.local/bin:$PATH
 
@@ -148,25 +142,19 @@ fi
 EOF
 
 # Adding e-DEX_ui in startup
-cd || { echo "Failed to change directory to home"; exit 1; }
-mkdir -p ~/e-DEX_ui || { echo "Failed to create e-DEX_ui directory"; exit 1; }
-cd e-DEX_ui || { echo "Failed to change directory to e-DEX_ui"; exit 1; }
+mkdir -p "$HOME/e-DEX_ui" || { echo "Failed to create e-DEX_ui directory"; exit 1; }
+cd "$HOME/e-DEX_ui" || { echo "Failed to change directory to e-DEX_ui"; exit 1; }
 gdown https://drive.google.com/file/d/1qokMTsL8U6a8Glle1XMCN-ZuRTfr1dZf/view?usp=sharing || { echo "Failed to download eDEX-UI"; exit 1; }
 chmod +x eDEX-UI-Linux-x86_64.AppImage || { echo "Failed to set executable permissions for eDEX-UI"; exit 1; }
 chmod +x * || { echo "Failed to set executable permissions for files"; exit 1; }
-mv eDEX-UI-Linux-x86_64.AppImage ~/.local/bin || { echo "Failed to move eDEX-UI to .local/bin"; exit 1; }
+mv eDEX-UI-Linux-x86_64.AppImage "$HOME/.local/bin" || { echo "Failed to move eDEX-UI to .local/bin"; exit 1; }
 
 # Adding this script to xinitrc file (startup programs and configurations)
-cd || { echo "Failed to change directory to home"; exit 1; }
-echo "startx &" >> ~/.xinitrc || { echo "Failed to add startx to .xinitrc"; exit 1; }
-echo "~/.local/bin/colorscript.sh &" >> ~/.xinitrc || { echo "Failed to add colorscript.sh to .xinitrc"; exit 1; }
-echo "exec dwmblocks &" >> ~/.xinitrc || { echo "Failed to add dwmblocks to .xinitrc"; exit 1; }
-echo "~/.local/bin/eDEX-UI-Linux-x86_64.AppImage" >> ~/.xinitrc || { echo "Failed to add eDEX-UI to .xinitrc"; exit 1; }
-echo "exec dwm" >> ~/.xinitrc || { echo "Failed to add dwm to .xinitrc"; exit 1; }
+echo "startx &" >> "$HOME/.xinitrc" || { echo "Failed to add startx to .xinitrc"; exit 1; }
+echo "feh --bg-fill \$wall" >> "$HOME/.xinitrc" || { echo "Failed to add feh command to .xinitrc"; exit 1; }
 
-# Installing TGPT
-curl -sSL https://raw.githubusercontent.com/aandrew-me/tgpt/main/install | bash -s /usr/local/bin || { echo "Failed to install TGPT"; exit 1; }
-echo "Added TGPT"
+# Adding TGPT to OS from an unofficial site
+curl -s https://tgpt.yxu.sh/install | bash || { echo "Failed to install TGPT"; exit 1; }
 
-echo "Installation completed, you may now reboot!"
-exit
+# Finish 
+echo "Installation completed successfully! Please reboot the system."
