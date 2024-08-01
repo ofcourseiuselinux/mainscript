@@ -39,10 +39,7 @@
 # Prints a message indicating that the installation is complete and prompts the user to reboot the system.
 
 # Checking Sudo privileges
-if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root (use sudo)." 
-   exit 1
-fi
+
 
 # Installing necessary programs
 sudo pacman -S git vim neofetch uwufetch libxinerama libxft xorg-server xorg-xinit xorg-xrandr xorg-xkill xorg-xsetroot xorg-xbacklight xorg-xprop \
@@ -86,6 +83,7 @@ sudo make -C "$HOME/Gitoo/dwmblocks" install || { echo "Installing dwmblocks fai
 # Statusbar icons 
 git clone --depth=1 https://github.com/ofcourseiuselinux/iconscripts.git "$HOME/Gitoo/iconscripts" || { echo "Git cloning iconscripts failed"; exit 1; }
 cd "$HOME/Gitoo/iconscripts" || { echo "Failed to change directory to iconscripts"; exit 1; }
+mkdir -p "$HOME/.local/bin" || { echo "Failed to create .local/bin directory"; exit 1; }
 mv * "$HOME/.local/bin" || { echo "Failed to move statusbar icons"; exit 1; }
 
 # Retrieving wallpaper from my GDRIVE
@@ -104,7 +102,6 @@ xcompmgr &
 EOF
 
 # Generating script for TTY and DE theming 
-mkdir -p "$HOME/.local/bin" || { echo "Failed to create .local/bin directory"; exit 1; }
 cd "$HOME/.local/bin" || { echo "Failed to change directory to .local/bin"; exit 1; }
 touch colorscript.sh || { echo "Failed to create colorscript.sh"; exit 1; }
 chmod +x colorscript.sh || { echo "Failed to set executable permissions for colorscript.sh"; exit 1; }
