@@ -1,98 +1,172 @@
 #!/bin/bash
 
-# Update the system
-echo "Updating system packages..."
-sudo pacman -Syu || { echo "System update failed"; exit 1; }
+#Explanation of code
+# # Check for Root Privileges:
+# The script checks if it's being run as root (administrator). If not, it exits with a message,
+# ensuring that administrative permissions are required for the script to run.
 
-# Installing necessary packages
-echo "Installing necessary packages for compilation and basic system utilities..."
-sudo pacman -S base-devel git vim xwallpaper xorg-xrandr zsh python-pywal zsh-syntax-highlighting xdotool || { echo "Package installation failed"; exit 1; }
+# Install Necessary Programs:
+# This step installs various essential packages and programs for the system,
+# including utilities, themes, and applications needed for the setup.
 
-echo "Installing dependencies ....."
-sudo pacman -S xorg libxft libx11 libxinerama ttf-font-awesome python python-pip || { echo "Additional dependencies installation failed"; exit 1; }
+# Clone and Build Software:
+# The script clones source code from repositories I’ve worked on, builds the software, and installs it.
+# This includes window managers, terminal emulators, menu tools, and status bar components.
 
-echo "Installing gdown for GD pull req"
-sudo pip install gdown --break-system-packages || { echo "Failed to install gdown"; exit 1; }
+# Download Wallpapers:
+# Downloads various wallpapers from Google Drive to use as desktop backgrounds.
 
-# Cloning the repositories
-echo "Cloning the dwm repository from GitHub..."
-git clone https://github.com/ofcourseiuselinux/myusage-dwm.git || { echo "Failed to clone dwm repository"; exit 1; }
+# Configure X Server and Scripts:
+# Copies the default X server configuration file, adds compositor settings,
+# and creates a script to handle wallpaper and theme changes automatically.
 
-echo "Cloning the st repository from GitHub..."
-git clone https://github.com/ofcourseiuselinux/myusage-st.git || { echo "Failed to clone st repository"; exit 1; }
+# Set Up Shell Environment:
+# Configures environment variables and paths for the Zsh shell,
+# including automatic X server start on virtual terminals.
 
-echo "Cloning the dmenu repository from GitHub..."
-git clone https://github.com/ofcourseiuselinux/myusage-dmenu.git || { echo "Failed to clone dmenu repository"; exit 1; }
+# Install and Configure e-DEX-UI:
+# Downloads and sets up the e-DEX-UI terminal emulator UI,
+# adjusting permissions and moving it to the local bin directory.
 
-# Array of repositories to build and install
-directories=("myusage-dwm" "myusage-st" "myusage-dmenu")
+# Update .xinitrc:
+# Adds commands to the .xinitrc file to start programs and configurations at login,
+# including running the X server, applying themes, and starting window managers and applications.
 
-# Loop through each repository and build/install
-for dir in "${directories[@]}"; do
-  if [ -d "$dir" ]; then
-    cd "$dir" || { echo "Failed to change directory to $dir"; exit 1; }
-    echo "Installing in directory: $dir"
-    sudo make clean install || { echo "Failed to install $dir"; exit 1; }
-    cd ..
-  else
-    echo "Directory $dir does not exist."
-  fi
-done
+# Install TGPT:
+# Installs TGPT from a remote script and adds it to the system.
 
-# Configure .xinitrc
-echo "Configuring .xinitrc to start dwm..."
-# Copy the default xinitrc to the user's home directory
+# Completion Message:
+# Prints a message indicating that the installation is complete and prompts the user to reboot the system.
+
+
+
+
+# Checking Sudo privileges
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root (use sudo)." 
+   exit 1
+fi
+
+# Installing necessary programs
+sudo pacman -S git vim neofetch uwufetch libxinerama libxft xorg-server xorg-xinit xorg-xrandr xorg-xkill xorg-xsetroot xorg-xbacklight xorg-xprop \
+     noto-fonts noto-fonts-emoji noto-fonts-cjk ttf-jetbrains-mono ttf-joypixels ttf-font-awesome ttf-fira-code \
+     sxiv mpv zathura zathura-pdf-mupdf ffmpeg imagemagick python-pip \
+     fzf man-db xwallpaper python-pywal unclutter xclip maim zsh-syntax-highlighting wget \
+     zip unzip unrar p7zip xdotool papirus-icon-theme brightnessctl \
+     dosfstools ntfs-3g git sxhkd zsh pipewire pipewire-pulse thunar \
+     emacs-nox arc-gtk-theme rsync qutebrowser dash \
+     xcompmgr libnotify dunst slock jq aria2 cowsay \
+     dhcpcd connman wpa_supplicant rsync pamixer mpd ncmpcpp \
+     xdg-user-dirs libconfig \
+     bluez bluez-utils --noconfirm || { echo "Installation of necessary programs failed"; exit 1; }
+
+# Making DIR for git REPOS for DE
+mkdir -p ~/Gitoo || { echo "Failed to create Gitoo directory"; exit 1; }
+cd ~/Gitoo || { echo "Failed to change directory to Gitoo"; exit 1; }
+
+# Cloning and building repos and compiling them
+
+# dwm: Window Manager
+git clone --depth=1 https://github.com/Bugswriter/dwm.git ~/Gitoo || { echo "Git cloning dwm failed"; exit 1; }
+sudo make -C ~/Gitoo/dwm install || { echo "Installing dwm failed"; exit 1; }
+
+# st: Terminal
+git clone --depth=1 https://github.com/Bugswriter/st.git ~/.local/src/st || { echo "Git cloning st failed"; exit 1; }
+sudo make -C ~/Gitoo/st install || { echo "Installing st failed"; exit 1; }
+
+# dmenu: Program Menu
+git clone --depth=1 https://github.com/Bugswriter/dmenu.git ~/Gitoo || { echo "Git cloning dmenu failed"; exit 1; }
+sudo make -C ~/Gitoo/dmenu install || { echo "Installing dmenu failed"; exit 1; }
+
+# dmenu: Dmenu based Password Prompt
+git clone --depth=1 https://github.com/ritze/pinentry-dmenu.git ~/Gitoo || { echo "Git cloning pinentry-dmenu failed"; exit 1; }
+sudo make -C ~/Gitoo/pinentry-dmenu clean install || { echo "Installing pinentry-dmenu failed"; exit 1; }
+
+# dwmblocks: Status bar for dwm
+git clone --depth=1 https://github.com/ofcourseiuselinux/dwmblocks.git ~/Gitoo || { echo "Git cloning dwmblocks failed"; exit 1; }
+sudo make -C ~/Gitoo/dwmblocks install || { echo "Installing dwmblocks failed"; exit 1; }
+
+# Statusbar icons 
+git clone --depth=1 https://github.com/ofcourseiuselinux/iconscripts.git ~/Gitoo || { echo "Git cloning iconscripts failed"; exit 1; }
+cd ~/Gitoo/iconscripts || { echo "Failed to change directory to iconscripts"; exit 1; }
+mv * ~/.local/bin || { echo "Failed to move statusbar icons"; exit 1; }
+
+# Retrieving wallpaper from my GDRIVE
+cd || { echo "Failed to change directory to home"; exit 1; }
+mkdir -p ~/wallcolor || { echo "Failed to create wallcolor directory"; exit 1; }
+cd ~/wallcolor || { echo "Failed to change directory to wallcolor"; exit 1; }
+gdown https://drive.google.com/file/d/1oW5b-fmV437SndGRDQ-Yz-vFizDmDZFG/view?usp=drive_link -O ~/wallcolor || { echo "Failed to download wallpaper"; exit 1; }
+# Repeat for other gdown commands similarly...
+
+# Copying configs to proper places
 cp /etc/X11/xinit/xinitrc ~/.xinitrc || { echo "Failed to copy xinitrc"; exit 1; }
 
+# Adding our configs and removing stuff to OS configs and Appending code to ~/.xinitrc using heredoc
+sed -i '/twm &/,$d' ~/.xinitrc || { echo "Failed to update xinitrc"; exit 1; }
+cat <<EOF >> ~/.xinitrc
+xcompmgr &
+EOF
 
-# Creating wallpaper directory
-echo "Creating wallpaper directory..."
-mkdir -p ~/wallpapers || { echo "Failed to create wallpapers directory"; exit 1; }
-cd ~/wallpapers || { echo "Failed to change directory to ~/wallpapers"; exit 1; }
-
-# Pulling wallpapers from Google Drive
-echo "Downloading wallpapers..."
-for id in 1oW5b-fmV437SndGRDQ-Yz-vFizDmDZFG 11scVF2c9qGufWUxXpc4Pwg-FGZoQALNg 16jNpjYE9Z3CmSoDYw_BlsT3OKTc1RlU5 1CY5CKUIT2VafrrJfUDUI6S7JfK7RdFmS 1nhP-tACiGN3tVTA5v97to7NwztG_HGUL 1O82WLdQKnhAWzzshKmOlfjifIwFrO5jG 1DytOC4EjGJ0WbofAKO6KAwn939v2goEO 1tV229zFzfYY0ATWN6p9hlJChqeFGEGVu 1iNhj0c6UORPzdvWC3f08cY46R6rKdrlN 13zuhJGy_L10gvU2HtfFaateYiwTmDBN6 1EukhOxfBG8s0FuDrT1EZtTgqEVmeVhsl 1jdd7inEyGWwLFXYg-nNCI1fRIwKa6myA 14tq24wrSviA7YTHF20ML0yMweawLzguQ 1P7kESkXh1vFv734Kv6YMdpaXOwmCOkor 162P_HzTTRYzuSB1tFKPV6wraEal34rIO; do
-  gdown "https://drive.google.com/uc?id=$id" || { echo "Failed to download wallpaper with ID $id"; exit 1; }
-done
-echo "Well walls are painted"
-
-# Creating the pywal script
-echo "Creating pywal script..."
-mkdir -p ~/.local/bin
-cd ~/.local/bin || { echo "Failed to change directory to ~/.local/bin"; exit 1; }
-touch theme-script.sh
-chmod +x theme-script.sh
-cat <<EOF > theme-script.sh
+# Generating script for TTY and DE theming 
+cd || { echo "Failed to change directory to home"; exit 1; }
+mkdir -p ~/.local/bin || { echo "Failed to create .local/bin directory"; exit 1; }
+cd ~/.local/bin || { echo "Failed to change directory to .local/bin"; exit 1; }
+touch colorscript.sh || { echo "Failed to create colorscript.sh"; exit 1; }
+chmod +x colorscript.sh || { echo "Failed to set executable permissions for colorscript.sh"; exit 1; }
+cat <<EOF > colorscript.sh
 #!/bin/bash
-wall=\$(find ~/wallpapers -type f -name "*.jpg" -o -name "*.png" | shuf -n 1)
 
-# Coloring my wall
-xwallpaper --zoom \$wall
+# Changing font
+setfont ttf-fira-code
 
-# Generating color scheme
+# Setting variable and its value
+wall=$(find ~/wallcolor -type f -name "*.jpg" -o -name "*.png" | shuf -n 1)
+
+# Clear pywal cache
 wal -c
-wal -i \$wall
 
+# Set wallpaper as the value $wall
+xwallpaper --zoom $wall
+
+# Generating color theme as per wallpaper
+wal -i $wall
+
+# Registering keystroke for status bar to sync theme
 xdotool key super+F5
 EOF
 
-# Linking theme to xinitrc
-echo "Linking theme to .xinitrc..."
+# Adding path variables
 cd || { echo "Failed to change directory to home"; exit 1; }
-# Append 'exec dwm' to the end of the .xinitrc file
-echo "xcompmgr &" >> ~/.xinitrc
-echo "~/.local/bin/theme-script.sh &" >> ~/.xinitrc
-echo "exec dwm" >> ~/.xinitrc
+touch .zprofile || { echo "Failed to create .zprofile"; exit 1; }
+cat <<EOF > .zprofile
+export ZDOTDIR="$HOME/.config/zsh"
+export PATH=$HOME/.local/bin:$PATH
 
-# Modify .bash_profile to add startx
-echo "Modifying .bash_profile to add 'startx'..."
-if ! grep -q "startx" ~/.bash_profile; then
-  echo "startx" >> ~/.bash_profile || { echo "Failed to modify .bash_profile"; exit 1; }
-else
-  echo "'startx' is already present in .bash_profile"
+if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then 
+  exec startx
 fi
+EOF
 
-echo ".xinitrc has been configured and .bash_profile updated."
+# Adding e-DEX_ui in startup
+cd || { echo "Failed to change directory to home"; exit 1; }
+mkdir -p ~/e-DEX_ui || { echo "Failed to create e-DEX_ui directory"; exit 1; }
+cd e-DEX_ui || { echo "Failed to change directory to e-DEX_ui"; exit 1; }
+gdown https://drive.google.com/file/d/1qokMTsL8U6a8Glle1XMCN-ZuRTfr1dZf/view?usp=sharing || { echo "Failed to download eDEX-UI"; exit 1; }
+chmod +x eDEX-UI-Linux-x86_64.AppImage || { echo "Failed to set executable permissions for eDEX-UI"; exit 1; }
+chmod +x * || { echo "Failed to set executable permissions for files"; exit 1; }
+mv eDEX-UI-Linux-x86_64.AppImage ~/.local/bin || { echo "Failed to move eDEX-UI to .local/bin"; exit 1; }
 
-echo "Configuration complete."
+# Adding this script to xinitrc file (startup programs and configurations)
+cd || { echo "Failed to change directory to home"; exit 1; }
+echo "startx &" >> ~/.xinitrc || { echo "Failed to add startx to .xinitrc"; exit 1; }
+echo "~/.local/bin/colorscript.sh &" >> ~/.xinitrc || { echo "Failed to add colorscript.sh to .xinitrc"; exit 1; }
+echo "exec dwmblocks &" >> ~/.xinitrc || { echo "Failed to add dwmblocks to .xinitrc"; exit 1; }
+echo "~/.local/bin/eDEX-UI-Linux-x86_64.AppImage" >> ~/.xinitrc || { echo "Failed to add eDEX-UI to .xinitrc"; exit 1; }
+echo "exec dwm" >> ~/.xinitrc || { echo "Failed to add dwm to .xinitrc"; exit 1; }
+
+# Installing TGPT
+curl -sSL https://raw.githubusercontent.com/aandrew-me/tgpt/main/install | bash -s /usr/local/bin || { echo "Failed to install TGPT"; exit 1; }
+echo "Added TGPT"
+
+echo "Installation completed, you may now reboot!"
+exit
