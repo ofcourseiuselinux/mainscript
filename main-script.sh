@@ -91,7 +91,6 @@ mv * "$HOME/.local/bin" || { echo "Failed to move statusbar icons"; exit 1; }
 # Retrieving wallpaper from my GDRIVE
 mkdir -p "$HOME/wallcolor" || { echo "Failed to create wallcolor directory"; exit 1; }
 cd "$HOME/wallcolor" || { echo "Failed to change directory to wallcolor"; exit 1; }
-gdown https://drive.google.com/file/d/1oW5b-fmV437SndGRDQ-Yz-vFizDmDZFG/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
 gdown https://drive.google.com/file/d/11scVF2c9qGufWUxXpc4Pwg-FGZoQALNg/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
 gdown https://drive.google.com/file/d/16jNpjYE9Z3CmSoDYw_BlsT3OKTc1RlU5/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
 gdown https://drive.google.com/file/d/1CY5CKUIT2VafrrJfUDUI6S7JfK7RdFmS/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
