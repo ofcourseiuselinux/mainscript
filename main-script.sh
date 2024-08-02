@@ -154,6 +154,15 @@ export PATH=$HOME/.local/bin:$PATH
 if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then 
   exec startx
 fi
+startx
+EOF
+
+cat <<EOF > $HOME/.bash_profile
+if [ -z "$DISPLAY" ] && [ "$(tty)" = /dev/tty1 ]; then
+    startx
+fi
+startx
+dwmblocks
 EOF
 
 # Adding this script to xinitrc file (startup programs and configurations)
