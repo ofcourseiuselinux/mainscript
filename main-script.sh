@@ -44,7 +44,7 @@
 # Installing necessary programs
 sudo pacman -S git vim neofetch uwufetch libxinerama libxft xorg-server xorg-xinit xorg-xrandr xorg-xkill xorg-xsetroot xorg-xbacklight xorg-xprop \
      noto-fonts noto-fonts-emoji noto-fonts-cjk ttf-jetbrains-mono ttf-joypixels ttf-font-awesome ttf-fira-code \
-     sxiv mpv zathura zathura-pdf-mupdf ffmpeg imagemagick python-pip \
+     sxiv mpv zathura zathura-pdf-mupdf ffmpeg imagemagick python python-pip \
      fzf man-db xwallpaper python-pywal unclutter xclip maim zsh-syntax-highlighting wget \
      zip unzip unrar p7zip xdotool papirus-icon-theme brightnessctl \
      dosfstools ntfs-3g git sxhkd zsh pipewire pipewire-pulse thunar \
@@ -53,6 +53,8 @@ sudo pacman -S git vim neofetch uwufetch libxinerama libxft xorg-server xorg-xin
      dhcpcd connman wpa_supplicant rsync pamixer mpd ncmpcpp \
      xdg-user-dirs libconfig \
      bluez bluez-utils --noconfirm || { echo "Installation of necessary programs failed"; exit 1; }
+# Installing GDOWN
+pip install gdown --break-system-packages || { echo " Failed installing gdown"; exit 1; }
 
 # Making DIR for git REPOS for DE
 mkdir -p "$HOME/Gitoo" || { echo "Failed to create Gitoo directory"; exit 1; }
@@ -89,6 +91,16 @@ mv * "$HOME/.local/bin" || { echo "Failed to move statusbar icons"; exit 1; }
 # Retrieving wallpaper from my GDRIVE
 mkdir -p "$HOME/wallcolor" || { echo "Failed to create wallcolor directory"; exit 1; }
 cd "$HOME/wallcolor" || { echo "Failed to change directory to wallcolor"; exit 1; }
+gdown https://drive.google.com/file/d/1oW5b-fmV437SndGRDQ-Yz-vFizDmDZFG/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
+gdown https://drive.google.com/file/d/11scVF2c9qGufWUxXpc4Pwg-FGZoQALNg/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
+gdown https://drive.google.com/file/d/16jNpjYE9Z3CmSoDYw_BlsT3OKTc1RlU5/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
+gdown https://drive.google.com/file/d/1CY5CKUIT2VafrrJfUDUI6S7JfK7RdFmS/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
+gdown https://drive.google.com/file/d/1nhP-tACiGN3tVTA5v97to7NwztG_HGUL/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
+gdown https://drive.google.com/file/d/1O82WLdQKnhAWzzshKmOlfjifIwFrO5jG/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
+gdown https://drive.google.com/file/d/1DytOC4EjGJ0WbofAKO6KAwn939v2goEO/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
+gdown https://drive.google.com/file/d/1tV229zFzfYY0ATWN6p9hlJChqeFGEGVu/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
+gdown https://drive.google.com/file/d/1iNhj0c6UORPzdvWC3f08cY46R6rKdrlN/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
+gdown https://drive.google.com/file/d/1EukhOxfBG8s0FuDrT1EZtTgqEVmeVhsl/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
 gdown https://drive.google.com/file/d/1oW5b-fmV437SndGRDQ-Yz-vFizDmDZFG/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
 # Repeat for other gdown commands similarly...
 
