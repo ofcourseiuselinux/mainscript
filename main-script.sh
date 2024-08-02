@@ -53,8 +53,6 @@ sudo pacman -S git vim neofetch uwufetch libxinerama libxft xorg-server xorg-xin
      dhcpcd connman wpa_supplicant rsync pamixer mpd ncmpcpp \
      xdg-user-dirs libconfig \
      bluez bluez-utils --noconfirm || { echo "Installation of necessary programs failed"; exit 1; }
-# Installing GDOWN
-pip install gdown --break-system-packages || { echo " Failed installing gdown"; exit 1; }
 
 # Making DIR for git REPOS for DE
 mkdir -p "$HOME/Gitoo" || { echo "Failed to create Gitoo directory"; exit 1; }
@@ -91,16 +89,22 @@ mv * "$HOME/.local/bin" || { echo "Failed to move statusbar icons"; exit 1; }
 # Retrieving wallpaper from my GDRIVE
 mkdir -p "$HOME/wallcolor" || { echo "Failed to create wallcolor directory"; exit 1; }
 cd "$HOME/wallcolor" || { echo "Failed to change directory to wallcolor"; exit 1; }
-gdown https://drive.google.com/file/d/11scVF2c9qGufWUxXpc4Pwg-FGZoQALNg/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
-gdown https://drive.google.com/file/d/16jNpjYE9Z3CmSoDYw_BlsT3OKTc1RlU5/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
-gdown https://drive.google.com/file/d/1CY5CKUIT2VafrrJfUDUI6S7JfK7RdFmS/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
-gdown https://drive.google.com/file/d/1nhP-tACiGN3tVTA5v97to7NwztG_HGUL/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
-gdown https://drive.google.com/file/d/1O82WLdQKnhAWzzshKmOlfjifIwFrO5jG/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
-gdown https://drive.google.com/file/d/1DytOC4EjGJ0WbofAKO6KAwn939v2goEO/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
-gdown https://drive.google.com/file/d/1tV229zFzfYY0ATWN6p9hlJChqeFGEGVu/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
-gdown https://drive.google.com/file/d/1iNhj0c6UORPzdvWC3f08cY46R6rKdrlN/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
-gdown https://drive.google.com/file/d/1EukhOxfBG8s0FuDrT1EZtTgqEVmeVhsl/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
-gdown https://drive.google.com/file/d/1oW5b-fmV437SndGRDQ-Yz-vFizDmDZFG/view?usp=drive_link -O "$HOME/wallcolor" || { echo "Failed to download wallpaper"; exit 1; }
+wget -O "$HOME/wallcolor/wallhaven-2yxp16.jpg" "https://www.dropbox.com/scl/fi/9jrmcvx01ons70ov84vp1/wallhaven-2yxp16.jpg?rlkey=t1ozs3ixqn7w2o5jir47jx9th&st=yxdk66sq&dl=1" || { echo "Failed to download wallpaper"; exit 1; }
+wget -O "$HOME/wallcolor/wallhaven-3led2d.jpg" "https://www.dropbox.com/scl/fi/7jtl4oczv6s62ec1svvr9/wallhaven-3led2d.jpg?rlkey=13qyh4r6s17872eetegydckpo&st=ewug7hup&dl=1" || { echo "Failed to download wallpaper"; exit 1; }
+wget -O "$HOME/wallcolor/wallhaven-5go1w8.jpg" "https://www.dropbox.com/scl/fi/saqpmbacppj9pgte87zf9/wallhaven-5go1w8.jpg?rlkey=amlgkedq813mhvb39ojnvz5uz&st=n5fv9sg8&dl=1" || { echo "Failed to download wallpaper"; exit 1; }
+wget -O "$HOME/wallcolor/wallhaven-7p7yoe.png" "https://www.dropbox.com/scl/fi/w8bqsprzlsty4bwja1hhb/wallhaven-7p7yoe.png?rlkey=k8t57nwneq0ry5kzd19a6sc6r&st=qg31ynce&dl=1" || { echo "Failed to download wallpaper"; exit 1; }
+wget -O "$HOME/wallcolor/wallhaven-9dp3y1.jpg" "https://www.dropbox.com/scl/fi/goi2korg3lkdf08l2w59h/wallhaven-9dp3y1.jpg?rlkey=kd8lombxvo26hbg7wtlb75kbk&st=p9i8816i&dl=1" || { echo "Failed to download wallpaper"; exit 1; }
+wget -O "$HOME/wallcolor/wallhaven-72yzje.jpg" "https://www.dropbox.com/scl/fi/0fovos8sd468rv00ive0d/wallhaven-72yzje.jpg?rlkey=ri4hou2jomns04kwoj17fpznl&st=lk147jim&dl=1" || { echo "Failed to download wallpaper"; exit 1; }
+wget -O "$HOME/wallcolor/wallhaven-8586my.png" "https://www.dropbox.com/scl/fi/a6yn9u1ofknwt336yf8i0/wallhaven-8586my.png?rlkey=lhf5oux0tonyfdk05o259y0k0&st=p0jnge6t&dl=1" || { echo "Failed to download wallpaper"; exit 1; }
+wget -O "$HOME/wallcolor/wallhaven-d6y12l.jpg" "https://www.dropbox.com/scl/fi/zsx1wkn5uyncuvnjc9cc9/wallhaven-d6y12l.jpg?rlkey=mdg2gzz44lgpqoea6648d5exs&st=y2698vf0&dl=1" || { echo "Failed to download wallpaper"; exit 1; }
+wget -O "$HOME/wallcolor/wallhaven-d6yrml.jpg" "https://www.dropbox.com/scl/fi/mu53joq30a3q4o4g9z16j/wallhaven-d6yrml.jpg?rlkey=b2jkty1mpc3x1kjztq2risf22&st=r4h2uxag&dl=1" || { echo "Failed to download wallpaper"; exit 1; }
+wget -O "$HOME/wallcolor/wallhaven-exrqrr.jpg" "https://www.dropbox.com/scl/fi/lqj3z1r7y7jw507w8bm8b/wallhaven-exrqrr.jpg?rlkey=afanjbrwsxd17x1b3f1rdmvjk&st=ez0bnizj&dl=1" || { echo "Failed to download wallpaper"; exit 1; }
+wget -O "$HOME/wallcolor/wallhaven-vqlkrm.jpg" "https://www.dropbox.com/scl/fi/i68omjuywxpg3cugp0mjd/wallhaven-vqlkrm.jpg?rlkey=xybzy20zrv5jtoui74skdxgls&st=ztie28u3&dl=1" || { echo "Failed to download wallpaper"; exit 1; }
+wget -O "$HOME/wallcolor/wallhaven-werdv6.png" "https://www.dropbox.com/scl/fi/joadibh6a9fmv2sc26t6o/wallhaven-werdv6.png?rlkey=iamrw5c4elq19djzx5zb38hq6&st=g5tmhgvy&dl=1" || { echo "Failed to download wallpaper"; exit 1; }
+wget -O "$HOME/wallcolor/wallhaven-zy3l5o.jpg" "https://www.dropbox.com/scl/fi/6clzilx7oo6eyosl9pdsi/wallhaven-zy3l5o.jpg?rlkey=926j9k7lumv5t7cw3t4ol1qu9&st=6kbp0zj1&dl=1" || { echo "Failed to download wallpaper"; exit 1; }
+wget -O "$HOME/wallcolor/wallhaven-zy7gew.png" "https://www.dropbox.com/scl/fi/7u9ev58c814t4sh3igai1/wallhaven-zy7gew.png?rlkey=61fjhcjpuaw5gtj8beaamfisn&st=izeb1vka&dl=1" || { echo "Failed to download wallpaper"; exit 1; }
+wget -O "$HOME/wallcolor/wallhaven-zyj28v.jpg" "https://www.dropbox.com/scl/fi/h6uusdpu3doxhtr5zmz0r/wallhaven-zyj28v.jpg?rlkey=jh4bts9jjy290fqp40h1s9h7a&st=tf1xc08p&dl=1" || { echo "Failed to download wallpaper"; exit 1; }
+
 # Repeat for other gdown commands similarly...
 
 # Copying configs to proper places
