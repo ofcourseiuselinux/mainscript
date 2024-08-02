@@ -85,6 +85,9 @@ git clone --depth=1 https://github.com/ofcourseiuselinux/iconscripts.git "$HOME/
 cd "$HOME/Gitoo/iconscripts" || { echo "Failed to change directory to iconscripts"; exit 1; }
 mkdir -p "$HOME/.local/bin" || { echo "Failed to create .local/bin directory"; exit 1; }
 mv * "$HOME/.local/bin" || { echo "Failed to move statusbar icons"; exit 1; }
+cd "$HOME/.local/bin" 
+chmod +x *
+cd
 
 # Retrieving wallpaper from my GDRIVE
 mkdir -p "$HOME/wallcolor" || { echo "Failed to create wallcolor directory"; exit 1; }
