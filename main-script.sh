@@ -168,6 +168,7 @@ EOF
 # Adding this script to xinitrc file (startup programs and configurations)
 echo "startx &" >> "$HOME/.xinitrc" || { echo "Failed to add startx to .xinitrc"; exit 1; }
 echo "~/.local/bin/colorscript.sh" >> "$HOME/.xinitrc" || { echo "Failed to add colorscript command to .xinitrc"; exit 1; }
+echo "dwmblocks &" >> "$HOME/.xinitrc"
 echo "exec dwm" >> "$HOME/.xinitrc" || { echo " Failed to add exec dwm xinitrc" ; exit 1; }
 
 # Adding TGPT to OS from an unofficial site
