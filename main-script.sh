@@ -153,14 +153,6 @@ if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
 fi
 EOF
 
-# Adding e-DEX_ui in startup
-mkdir -p "$HOME/e-DEX_ui" || { echo "Failed to create e-DEX_ui directory"; exit 1; }
-cd "$HOME/e-DEX_ui" || { echo "Failed to change directory to e-DEX_ui"; exit 1; }
-gdown https://drive.google.com/file/d/1qokMTsL8U6a8Glle1XMCN-ZuRTfr1dZf/view?usp=sharing || { echo "Failed to download eDEX-UI"; exit 1; }
-chmod +x eDEX-UI-Linux-x86_64.AppImage || { echo "Failed to set executable permissions for eDEX-UI"; exit 1; }
-chmod +x * || { echo "Failed to set executable permissions for files"; exit 1; }
-mv eDEX-UI-Linux-x86_64.AppImage "$HOME/.local/bin" || { echo "Failed to move eDEX-UI to .local/bin"; exit 1; }
-
 # Adding this script to xinitrc file (startup programs and configurations)
 echo "startx &" >> "$HOME/.xinitrc" || { echo "Failed to add startx to .xinitrc"; exit 1; }
 echo "feh --bg-fill \$wall" >> "$HOME/.xinitrc" || { echo "Failed to add feh command to .xinitrc"; exit 1; }
